@@ -1,0 +1,68 @@
+// Define pins for Ultrasonic Sensor 1
+#define trigPin1 2
+#define echoPin1 3
+
+// Define pins for Ultrasonic Sensor 2
+#define trigPin2 4
+#define echoPin2 5
+
+// Define pins for buzzer or LED
+#define buzzerPin 8
+
+// Threshold distance in cm (50 cm)
+#define THRESHOLD_DISTANCE 50
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+  
+  // Set up ultrasonic sensor pins
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+
+  // Set up buzzer or LED pin
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop() {
+  // Get distance from Sensor 1
+  long distance1 = measureDistance(trigPin1, echoPin1);
+  
+  // Get distance from Sensor 2
+  long distance2 = measureDistance(trigPin2, echoPin2);
+
+  // Display distances on Serial Monitor
+  Serial.print("Distance 1: ");
+  Serial.print(distance1);
+  Serial.print(" cm, Distance 2: ");
+  Serial.print(distance2);
+  Serial.println(" cm");
+
+  // Check if any sensor detects an object within the threshold
+  if (distance1 < THRESHOLD_DISTANCE || distance2 < THRESHOLD_DISTANCE) {
+    digitalWrite(buzzerPin, HIGH); // Activate buzzer or LED
+  } else {
+    digitalWrite(buzzerPin, LOW); // Deactivate buzzer or LED
+  }
+
+  delay(200); // Short delay for faster response
+}
+
+// Function to measure distance
+long measureDistance(int trigPin, int echoPin) {
+  // Send a 10µs HIGH pulse to trigger pin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Read the echo pin and calculate distance
+  long duration = pulseIn(echoPin, HIGH);
+  long distance = (duration * 0.034) / 2; // Convert to cm
+
+  // Return measured distance
+  return distance;
+}
