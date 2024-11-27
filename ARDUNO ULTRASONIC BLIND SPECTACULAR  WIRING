@@ -1,0 +1,17 @@
+Connections:
+
+Ultrasonic Sensor 1:
+VCC → 5V
+GND → GND
+Trig → Pin 2
+Echo → Pin 3
+
+Ultrasonic Sensor 2:
+VCC → 5V
+GND → GND
+Trig → Pin 4
+Echo → Pin 5
+
+Buzzer or LED:
+Positive terminal → Pin 8
+Negative terminal → GND (use a resistor if using an LED)
